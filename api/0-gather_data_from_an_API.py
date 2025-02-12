@@ -6,7 +6,6 @@ import requests
 
 def gather_data(employee_id):
     """Fetch and display tasks for an employee"""
-
     url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
     response = requests.get(url)
     if response.status_code != 200:
@@ -23,11 +22,9 @@ def gather_data(employee_id):
         {employee_name(employee_id)} 
         is done with tasks(0/0):")
     else:
-        print(f"Employee {employee_name(employee_id)} 
-            is done with tasks({completed_count}/{total_tasks}):")
+        print(f"Employee {employee_name(employee_id)} is done with tasks({completed_count}/{total_tasks}):")
         for task in completed_tasks:
             print(f"\t {task}")
-
 
 def employee_name(employee_id):
     """Fetch employee name using their id"""
