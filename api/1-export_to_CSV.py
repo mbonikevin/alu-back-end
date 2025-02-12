@@ -22,24 +22,28 @@ def gather_data(employee_id):
         return
 
     data = response.json()
+    print(f"Total tasks fetched: {len(data)}")
 
     employee_name = get_employee_name(employee_id)
-    print(f"User ID and Username: {employee_id}, {employee_name} - OK")
 
     tasks = [
         (employee_id, employee_name, task['completed'], task['title'])
         for task in data
     ]
 
-    print(f"Number of tasks fetched: {len(tasks)} - OK")
+    print(f"Tasks to write to CSV: {len(tasks)}")
 
     file_name = f"{employee_id}.csv"
     with open(file_name, mode='w', newline='', encoding='utf-8') as csvfile:
-        csv_writer = csv.writer(csvfile, quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        csv_writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
+        csv_writer = csv.writer(csvfile, quotechar='"',
+                                quoting=csv.QUOTE_MINIMAL)
+        csv_writer.writerow(["USER_ID", "USERNAME",
+                             "TASK_COMPLETED_STATUS", "TASK_TITLE"])
         csv_writer.writerows(tasks)
 
-    print(f"Data for employee {employee_name} has been exported to {file_name}")
+    print(
+        f"Data for employee {employee_name} has been exported to {file_name}"
+    )
 
 
 def get_employee_name(employee_id):

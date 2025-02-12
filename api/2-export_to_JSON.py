@@ -1,8 +1,13 @@
 #!/usr/bin/python3
 
+"""
+Python script to export data in the JSON format.
+"""
+
 import json
-import sys
 import requests
+import sys
+
 
 def gather_data(employee_id):
     url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"

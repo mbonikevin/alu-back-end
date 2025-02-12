@@ -1,7 +1,12 @@
 #!/usr/bin/python3
 
+"""
+Python script to export data in the JSON format.
+"""
+
 import json
 import requests
+
 
 def fetch_todos():
     # We'll fetch the data from the API
