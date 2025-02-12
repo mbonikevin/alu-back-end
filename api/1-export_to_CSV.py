@@ -55,8 +55,8 @@ def get_employee_name(employee_id):
 
 if __name__ == "__main__":
     """main function to process command-line arguments and execute gathering"""
-    
-    
+
+
     if len(sys.argv) != 2:
         print("Usage: python3 1-export_to_CSV.py <employee_id>")
     else:
