@@ -12,6 +12,7 @@ import csv
 import requests
 import sys
 
+
 def gather_data(employee_id):
     """fetches tasks for a given employee and saves to CSV"""
     url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
