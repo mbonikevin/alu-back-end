@@ -25,8 +25,8 @@ def gather_data(employee_id):
     completed_count = len(completed_tasks)
 
     if total_tasks == 0:
-        print(f"Employee {employee_name(employee_id)} 
-              is done with tasks(0/0):")
+        print(f"Employee {employee_name(employee_id)} is done with tasks("
+      "0/0):")
     else:
         print(f"Employee {employee_name(employee_id)} is done with tasks("
               f"{completed_count}/{total_tasks}):")
