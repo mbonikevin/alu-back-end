@@ -2,6 +2,9 @@
 
 """
 Python script to export data in the JSON format.
+The script fetches tasks for a specific employee from an API 
+and exports the task data into a JSON file. 
+The employee ID is provided as a command-line argument.
 """
 
 import json
@@ -10,6 +13,11 @@ import sys
 
 
 def gather_data(employee_id):
+    """
+    Fetches task data for a given employee from the API.
+    Saves the tasks in a JSON file named with the employee ID.
+    Each task contains the task title, completion status, and username.
+    """
     url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
     response = requests.get(url)
     if response.status_code != 200:
@@ -28,6 +36,10 @@ def gather_data(employee_id):
     print(f"Data for employee {employee_name} has been exported to {file_name}")
 
 def get_employee_name(employee_id):
+    """
+    Fetches the username of an employee based on their ID.
+    Returns the username if successful, 'Unknown User' otherwise.
+    """
     url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
     response = requests.get(url)
     if response.status_code == 200:
@@ -37,6 +49,10 @@ def get_employee_name(employee_id):
         return 'Unknown User'
 
 if __name__ == "__main__":
+    """
+    Main script execution.
+    Checks command-line argument for employee ID and triggers the gathering process.
+    """
     if len(sys.argv) != 2:
         print("Usage: python3 2-export_to_JSON.py <employee_id>")
     else:
