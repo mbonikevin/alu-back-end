@@ -9,9 +9,8 @@ task completion status, and task title.
 """
 
 import csv
-import sys
 import requests
-
+import sys
 
 def gather_data(employee_id):
     """fetches tasks for a given employee and saves to CSV"""
