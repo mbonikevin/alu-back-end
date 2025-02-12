@@ -31,8 +31,10 @@ def gather_data(employee_id):
 
     file_name = f"{employee_id}.csv"
     with open(file_name, mode='w', newline='', encoding='utf-8') as csvfile:
-        csv_writer = csv.writer(csvfile, quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        csv_writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
+        csv_writer = csv.writer(csvfile, quotechar='"',
+                                quoting=csv.QUOTE_MINIMAL)
+        csv_writer.writerow(["USER_ID", "USERNAME",
+                             "TASK_COMPLETED_STATUS", "TASK_TITLE"])
         csv_writer.writerows(tasks)
 
     print(
@@ -53,6 +55,7 @@ def get_employee_name(employee_id):
 
 if __name__ == "__main__":
     """main function to process command-line arguments and execute gathering"""
+    
     
     if len(sys.argv) != 2:
         print("Usage: python3 1-export_to_CSV.py <employee_id>")
