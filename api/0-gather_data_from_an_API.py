@@ -6,13 +6,15 @@ It takes an employee ID as a command-line argument.
 Displays completed tasks for the employee and their total task count.
 """
 
-import sys  # system operations
 import requests  # HTTP requests
+import sys  # system operations
+
 
 def gather_data(employee_id):
     """Fetch and display tasks for an employee."""
     url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
     response = requests.get(url)
+
     if response.status_code != 200:
         print("Error: Unable to fetch data")
         return
@@ -25,19 +27,23 @@ def gather_data(employee_id):
     if total_tasks == 0:
         print(f"Employee {employee_name(employee_id)} is done with tasks(0/0):")
     else:
-        print(f"Employee {employee_name(employee_id)} is done with tasks({completed_count}/{total_tasks}):")
+        print(f"Employee {employee_name(employee_id)} is done with tasks("
+              f"{completed_count}/{total_tasks}):")
         for task in completed_tasks:
             print(f"\t {task}")
+
 
 def employee_name(employee_id):
     """Fetch employee name using their ID."""
     url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
     response = requests.get(url)
+
     if response.status_code == 200:
         user_data = response.json()
         return user_data.get('name', 'Unknown Employee')
     else:
         return 'Unknown Employee'
+
 
 if __name__ == "__main__":
     """Main script execution."""
