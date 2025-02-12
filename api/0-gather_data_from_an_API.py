@@ -1,5 +1,11 @@
 #!/usr/bin/python3
 
+"""
+This script fetches tasks for a given employee from the API.
+It takes an employee ID as a command-line argument.
+Displays completed tasks for the employee and their total task count.
+"""
+
 import sys  # system operations
 import requests  # HTTP requests
 
