@@ -1,69 +1,41 @@
 #!/usr/bin/python3
-
-"""
-This script fetches tasks for a given employee from the API
-and exports them to a CSV file. The employee ID is passed
-as a command-line argument. The script retrieves tasks and
-writes them to a CSV with columns for user ID, username,
-task completion status, and task title.
-"""
+"""Script that gets user data (Todo list) from API
+and then export the result to csv file. """
 
 import csv
 import requests
 import sys
 
 
-def gather_data(employee_id):
-    """fetches tasks for a given employee and saves to CSV"""
-    url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
-    response = requests.get(url)
-    if response.status_code != 200:
-        print("Error: Unable to fetch data")
-        return
+def main():
+    """main function"""
+    user_id = int(sys.argv[1])
+    todo_url = 'https://jsonplaceholder.typicode.com/todos'
+    user_url = 'https://jsonplaceholder.typicode.com/users/{}'.format(user_id)
 
-    data = response.json()
-    print(f"Total tasks fetched: {len(data)}")
+    file_content = []
 
-    employee_name = get_employee_name(employee_id)
+    response = requests.get(todo_url)
+    user_name = requests.get(user_url).json().get('username')
 
-    tasks = [
-        (employee_id, employee_name, task['completed'], task['title'])
-        for task in data
-    ]
+    for todo in response.json():
+        if todo.get('userId') == user_id:
+            file_content.append(
+                [str(user_id),
+                 user_name,
+                 todo.get('completed'),
+                 "{}".format(todo.get('title'))])
 
-    print(f"Tasks to write to CSV: {len(tasks)}")
-
-    file_name = f"{employee_id}.csv"
-    with open(file_name, mode='w', newline='', encoding='utf-8') as csvfile:
-        csv_writer = csv.writer(csvfile, quotechar='"',
-                                quoting=csv.QUOTE_MINIMAL)
-        csv_writer.writerow(["USER_ID", "USERNAME",
-                             "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-        csv_writer.writerows(tasks)
-
-    print(
-        f"Data for employee {employee_name} has been exported to {file_name}"
-    )
-
-
-def get_employee_name(employee_id):
-    """fetches the name of an employee from the API"""
-    url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        user_data = response.json()
-        return user_data.get('username', 'Unknown User')
-    else:
-        return 'Unknown User'
+    print(file_content)
+    file_name = "{}.csv".format(user_id)
+    with open(file_name, 'w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+        for row in file_content:
+            for item in row:
+                str(item)
+            csv_writer.writerow(row)
+        print('file written successfully')
 
 
 if __name__ == "__main__":
-    """main function to process command-line arguments and execute gathering"""
-    if len(sys.argv) != 2:
-        print("Usage: python3 1-export_to_CSV.py <employee_id>")
-    else:
-        try:
-            employee_id = int(sys.argv[1])
-            gather_data(employee_id)
-        except ValueError:
-            print("Error: Employee ID must be an integer.")
+    main()

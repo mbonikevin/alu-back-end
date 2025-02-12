@@ -1,63 +1,36 @@
 #!/usr/bin/python3
-
-"""
-Python script to export data in the JSON format.
-The script fetches tasks for a specific employee from an API 
-and exports the task data into a JSON file. 
-The employee ID is provided as a command-line argument.
-"""
+"""Script that gets user data (Todo list) from API
+and then export the result to csv file. """
 
 import json
 import requests
 import sys
 
 
-def gather_data(employee_id):
-    """
-    Fetches task data for a given employee from the API.
-    Saves the tasks in a JSON file named with the employee ID.
-    Each task contains the task title, completion status, and username.
-    """
-    url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
-    response = requests.get(url)
-    if response.status_code != 200:
-        print("Error: Unable to fetch data")
-        return
+def main():
+    """main function"""
+    user_id = int(sys.argv[1])
+    todo_url = 'https://jsonplaceholder.typicode.com/todos'
+    user_url = 'https://jsonplaceholder.typicode.com/users/{}'.format(user_id)
 
-    data = response.json()
-    employee_name = get_employee_name(employee_id)
+    response = requests.get(todo_url)
+    user_name = requests.get(user_url).json().get('username')
+    user_data = []
+    output = {user_id: user_data}
 
-    tasks = [{"task": task['title'], "completed": task['completed'], "username": employee_name} for task in data]
+    for todo in response.json():
+        if todo.get('userId') == user_id:
+            user_data.append(
+                {
+                    "task": todo.get('title'),
+                    "completed": todo.get('completed'),
+                    "username": user_name,
+                })
+    print(output)
+    file_name = "{}.json".format(user_id)
+    with open(file_name, 'w') as file:
+        json.dump(output, file)
 
-    file_name = f"{employee_id}.json"
-    with open(file_name, mode='w', encoding='utf-8') as jsonfile:
-        json.dump({str(employee_id): tasks}, jsonfile, ensure_ascii=False, indent=4)
 
-    print(f"Data for employee {employee_name} has been exported to {file_name}")
-
-def get_employee_name(employee_id):
-    """
-    Fetches the username of an employee based on their ID.
-    Returns the username if successful, 'Unknown User' otherwise.
-    """
-    url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        user_data = response.json()
-        return user_data.get('username', 'Unknown User')
-    else:
-        return 'Unknown User'
-
-if __name__ == "__main__":
-    """
-    Main script execution.
-    Checks command-line argument for employee ID and triggers the gathering process.
-    """
-    if len(sys.argv) != 2:
-        print("Usage: python3 2-export_to_JSON.py <employee_id>")
-    else:
-        try:
-            employee_id = int(sys.argv[1])
-            gather_data(employee_id)
-        except ValueError:
-            print("Error: Employee ID must be an integer.")
+if __name__ == '__main__':
+    main()
