@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""api geting data"""
 
 import sys
 import requests
